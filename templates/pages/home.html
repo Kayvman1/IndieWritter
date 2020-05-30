@@ -7,7 +7,7 @@ IndieWritter
 {%block content%}
 <h1>this is the home page</h1>
 <div id = 'poems'>
-    REPLACE ME
+    Loading ...
 
 </div>
 
@@ -22,10 +22,21 @@ const responseType = "json"
 
 xhr.responseType = responseType
 xhr.open (method, url)
+
 xhr.onload = function(){
     const serverResponse = xhr.response
-    var listedItems = serverResponse.response
-    poemsElement.innerHTML = listedItems[0]
+    const listedItems = serverResponse.response
+    var finalPoemStr = ""
+    var i;
+    
+    for (i =0;  i <listedItems.length; i++){
+        var currItem = "<div class='mb-4'><h1> Poem#"+ listedItems[i].id +" </h1>"
+        currItem += "<p>" + listedItems[i].content + "</p></div>"
+        finalPoemStr += currItem
+        console.log(i)
+    }
+
+    poemsElement.innerHTML = finalPoemStr
     console.log (listedItems)
 }
 xhr.send()

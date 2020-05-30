@@ -7,7 +7,7 @@ from .models import Poem
 
 def poem_list_view(request, *args, **kwargs):
     qs = Poem.objects.all()
-    poem_list = [{"id": obj.id, "content": obj.content} for obj in qs]
+    poem_list = [{"id": obj.id, "title": obj.title,"content": obj.content} for obj in qs]
     data = {
         'response' : poem_list
     }
@@ -30,6 +30,7 @@ def poem_detail_view(request, poem_id, *args, **kwargs):
     try:
         obj = Poem.objects.get(id = poem_id)
         data['content'] = obj.content
+        data['title'] = obj.title
         #"img_path": obj.image.url
     except:
         
