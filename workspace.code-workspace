@@ -4,5 +4,8 @@
 			"path": "."
 		}
 	],
-	"remoteAuthority": "wsl+Ubuntu"
+	"remoteAuthority": "wsl+Ubuntu",
+	"settings": {
+		"python.pythonPath": "/bin/python3"
+	}
 }

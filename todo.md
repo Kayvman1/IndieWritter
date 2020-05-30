@@ -12,7 +12,7 @@
 2. Poems
     - creating 
         - text 
-        - images (artwork to accompany)
+        - images (artwork to accompany) -> media storage server
         - voice
         - pdf
         - repubing
@@ -24,3 +24,4 @@ Long term todo
     - Explore page
     - Email service
     - Tags
+    - annonation 
