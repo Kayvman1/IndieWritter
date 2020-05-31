@@ -5,7 +5,7 @@ IndieWritter
 {%endblock head_title%}
 
 {%block content%}
-<h1>this is the home page</h1>
+<h1>Welcome to IndieWritter</h1>
 <div id = 'poems'>
     Loading ...
 
@@ -14,6 +14,19 @@ IndieWritter
 <script>
 const poemsElement = document.getElementById("poems")
 
+function handleDidLike(poem_id, currentCount){
+    poemsElement.innerHTML="YOu have liked a poem"
+}
+
+function LikeBtm(poem){
+    return "<button class = 'btn btn-primary' onclick = handleDidLike(poem_id,poem.likes)>Like</button>"
+
+}
+function formatPoemElement(poem){
+    var formattedPoem = "<div class='mb-4' id='poem-" + poem.id + "'>" + "<h2>" + poem.title + "</h2>" + 
+    "<p>" +poem.content + "</p> <div>" + LikeBtm(poem) +"</div></div>"
+   return formattedPoem 
+}
 
 const xhr = new XMLHttpRequest()
 const method = 'GET'
@@ -30,14 +43,12 @@ xhr.onload = function(){
     var i;
     
     for (i =0;  i <listedItems.length; i++){
-        var currItem = "<div class='mb-4'><h1> Poem#"+ listedItems[i].id +" </h1>"
-        currItem += "<p>" + listedItems[i].content + "</p></div>"
+        poemObj = listedItems[i]
+        var currItem = formatPoemElement(poemObj)
         finalPoemStr += currItem
-        console.log(i)
     }
 
     poemsElement.innerHTML = finalPoemStr
-    console.log (listedItems)
 }
 xhr.send()
 
