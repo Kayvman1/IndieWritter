@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import random
 from django.http import HttpResponse, Http404, JsonResponse
 from .models import Poem
 
@@ -7,7 +8,7 @@ from .models import Poem
 
 def poem_list_view(request, *args, **kwargs):
     qs = Poem.objects.all()
-    poem_list = [{"id": obj.id, "title": obj.title,"content": obj.content} for obj in qs]
+    poem_list = [{"id": obj.id, "title": obj.title,"content": obj.content, "likes": random.randint(0, 100)} for obj in qs]
     data = {
         'response' : poem_list
     }

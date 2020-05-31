@@ -15,11 +15,13 @@ IndieWritter
 const poemsElement = document.getElementById("poems")
 
 function handleDidLike(poem_id, currentCount){
-    poemsElement.innerHTML="YOu have liked a poem"
+    currentCount ++
+    console.log(poem_id, currentCount)
 }
 
 function LikeBtm(poem){
-    return "<button class = 'btn btn-primary' onclick = handleDidLike(poem_id,poem.likes)>Like</button>"
+    return "<button class = 'btn btn-primary btn-sm' onclick = handleDidLike(" + poem.id + "," + poem.likes +
+    ")> "+ poem.likes + "Like</button>"
 
 }
 function formatPoemElement(poem){
@@ -46,6 +48,7 @@ xhr.onload = function(){
         poemObj = listedItems[i]
         var currItem = formatPoemElement(poemObj)
         finalPoemStr += currItem
+        console.log("check out geno.cc")
     }
 
     poemsElement.innerHTML = finalPoemStr
