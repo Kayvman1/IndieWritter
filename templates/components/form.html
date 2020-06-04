@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{%block head_title%}
+    PoemCreator
+{%endblock head_title%}
+
+{%block content%}
+<form method = 'POST'> {% csrf_token %}
+    {{form.as_p}}
+    <button type = 'submit' class = 'btn btn-secondary'> Post </button>
+
+</form>
+{%endblock content%}

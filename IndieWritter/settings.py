@@ -25,7 +25,7 @@ SECRET_KEY = '1@a33q+6l=$*i2(gy&&(&z)%$i3bp_+@-#+jef+cjeu1psj!#t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1'] #'.indiewritter.com for all of indiewritter
 
 
 # Application definition

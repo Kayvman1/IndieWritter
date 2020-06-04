@@ -15,7 +15,8 @@
         - images (artwork to accompany) -> media storage server
         - voice
         - pdf
-        - repubing
+    - repubing
+    -liking
 3. following / follewers
     - 
 Long term todo
