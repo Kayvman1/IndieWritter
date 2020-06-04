@@ -16,9 +16,12 @@
     <div class = 'col-md-4 mx-auto col-10'>
         <form class = 'form' id= 'poem-create-form' method = 'POST' action = '/create'>
             {% csrf_token %}
+            <div class = 'd-none alert alert-danger' id = 'poem-create-form-error'>
+
+            </div>
             <input type = 'hidden' value = '/home' name = 'next'/>
-            <textarea class = 'form-control' id = 'title' name = 'title' placeholder="Your Title ..."></textarea>
-            <textarea class = 'form-control' id = 'content' name = 'content' placeholder="Your Work ..."></textarea>
+            <textarea class = 'form-control' required = 'required' id = 'title' name = 'title' placeholder="Your Title ..."></textarea>
+            <textarea class = 'form-control' required = 'required' id = 'content' name = 'content' placeholder="Your Work ..."></textarea>
             <button class = 'btn btn-primary' >Post</button>
         </form>
     </div>
@@ -29,76 +32,114 @@
 
 <script>
     const poemsEl = document.getElementById("poems")
-
     const poemCreateForm = document.getElementById("poem-create-form")
     poemCreateForm.addEventListener("submit", handleFormDidSubmit)
+    loadPoems (poemsEl)
 
 
+    function handlePoemCreateFormError(msg, display){
+        var myErrorDiv = document.getElementById("poem-create-form-error")
+        if (display ===true){
+            myErrorDiv.setAttribute("class", 'alert alert-danger')
+            myErrorDiv.innerHTML = msg
+        }else{
+            myErrorDiv.setAttribute("class", 'd-none alert alert-danger')
 
-
+        }
+    }
     function loadPoems (poemsElement) {
         const xhr = new XMLHttpRequest()
-        const method = 'GET'
-        const url = "/poems"
-        const responseType = "json"
-        xhr.responseType = responseType
-        xhr.open (method, url)
+        xhr.responseType = "json"
+        xhr.open ('GET', "/poems")
         
         xhr.onload = function(){
             const serverResponse = xhr.response
             const listedItems = serverResponse.response
             var finalPoemStr = ""
             var i;
-    
-            for (i =listedItems.length -1 ;  i >=0; i--){
+            for (i =0 ;  i < listedItems.length; i++){
                 poemObj = listedItems[i]
                 var currItem = formatPoemElement(poemObj)
                 finalPoemStr += currItem
                 console.log("check out geno.cc")
             }
-
             poemsElement.innerHTML = finalPoemStr
         }
         xhr.send()
     }
 
-    loadPoems (poemsEl)
+    
     function handleFormDidSubmit(event){
         event.preventDefault()
         const myForm = event.target
         const myFormData = new FormData(myForm)
         const url = myForm.getAttribute("action")
         const method = myForm.getAttribute("method")
-        
+
         xhr = new XMLHttpRequest()  
         xhr.open (method, url)
         xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
         xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+        xhr.responseType = "json"
 
         xhr.onload = function (){
-            const serverResponse = xhr.serverResponse  
-  
-            loadPoems(poemsEl)
+            if (xhr.status === 201){
+                handlePoemCreateFormError('', false)
+
+                const retPoem = xhr.response 
+                const newElement = formatPoemElement(xhr.response) 
+                const currElement = poemsEl.innerHTML
+                poemsEl.innerHTML = newElement+ currElement  
+                myForm.reset()
+            }
+            else if(xhr.status === 400|| true){
+                const errorJson = xhr.response
+                console.log(errorJson)
+                const contentError = errorJson.content
+                const titleError = errorJson.title
+                let contentErrorMsg;
+                if (contentError || titleError) {
+                    contentErrorMsg = contentError[0]
+                    if (contentErrorMsg) {
+                        handlePoemCreateFormError(contentErrorMsg, true)
+                    } else {
+                        alert("An error occured. Please try again.")
+                    }
+                } else {
+                    resp = xhr.response
+                    console.log(JSON.parse(resp))
+            }
+
+            }
+
+            else if (xhr.status === 500){
+                alert ("Server error, please try again")
+            }
         }
+
+
+        xhr.onerror = function (){
+            alert("there was an error posting your work, please try again later")
+        }       
         xhr.send(myFormData)
 
     }
     
+
     function handleDidLike(poem_id, currentCount){
         currentCount ++
         console.log(poem_id, currentCount)
         return 
     }
 
-  
-
-   
 
     function LikeBtm(poem){
-        return "<button class = 'btn btn-primary btn-sm' onclick = handleDidLike(" + poem.id + "," + poem.likes +
-        ")> "+ poem.likes + "Like</button>"
+        return "<button class = 'btn btn-primary btn-sm' onclick = handleDidLike(" + poem.id + "," + poem.likes + ")> "+
+        poem.likes + " Likes"+
+         "</button>"
 
     }
+
 
     function formatPoemElement(poem){
         var formattedPoem = 
@@ -108,10 +149,6 @@
         "<div> " + LikeBtm(poem) +" </div></div>"
         return formattedPoem 
     }   
-
-
-
-
 
 </script> 
 {% endblock content%}
