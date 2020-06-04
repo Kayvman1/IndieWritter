@@ -33,16 +33,8 @@
     const poemCreateForm = document.getElementById("poem-create-form")
     poemCreateForm.addEventListener("submit", handleFormDidSubmit)
 
-    function handleFormDidSubmit(event){
-        event.preventDefault()
-        const myForm = event.target
-        const myFormData = new FormData(myForm)
-        for (var data1 of myFormData.entries()){
-            console.log(data1)
-        }
-        
-         
-    }
+
+
 
     function loadPoems (poemsElement) {
         const xhr = new XMLHttpRequest()
@@ -51,7 +43,7 @@
         const responseType = "json"
         xhr.responseType = responseType
         xhr.open (method, url)
-
+        
         xhr.onload = function(){
             const serverResponse = xhr.response
             const listedItems = serverResponse.response
@@ -71,6 +63,26 @@
     }
 
     loadPoems (poemsEl)
+    function handleFormDidSubmit(event){
+        event.preventDefault()
+        const myForm = event.target
+        const myFormData = new FormData(myForm)
+        const url = myForm.getAttribute("action")
+        const method = myForm.getAttribute("method")
+        
+        xhr = new XMLHttpRequest()  
+        xhr.open (method, url)
+        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+
+        xhr.onload = function (){
+            const serverResponse = xhr.serverResponse  
+  
+            loadPoems(poemsEl)
+        }
+        xhr.send(myFormData)
+
+    }
     
     function handleDidLike(poem_id, currentCount){
         currentCount ++
@@ -78,16 +90,22 @@
         return 
     }
 
+  
+
+   
+
     function LikeBtm(poem){
         return "<button class = 'btn btn-primary btn-sm' onclick = handleDidLike(" + poem.id + "," + poem.likes +
-               ")> "+ poem.likes + "Like</button>"
+        ")> "+ poem.likes + "Like</button>"
 
     }
 
     function formatPoemElement(poem){
-        var formattedPoem = "<div class='col-12 col-md-10 mx-auto border rounded py-3 mb-4' id='poem-" 
-                            + poem.id + "'>" + "<h5>" + poem.title + "</h5>" + 
-                            "<p>" +poem.content + "</p> <div>" + LikeBtm(poem) +"</div></div>"
+        var formattedPoem = 
+        "<div class='col-12 col-md-10 mx-auto border rounded py-3 mb-4' id='poem-"  + poem.id + "'>" + 
+        "<h5>" + poem.title + "</h5>" + 
+        "<p>" +poem.content + "</p>"+
+        "<div> " + LikeBtm(poem) +" </div></div>"
         return formattedPoem 
     }   
 

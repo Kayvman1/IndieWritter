@@ -23,5 +23,6 @@ urlpatterns = [
     path('home', home_view),
     path('poems/<int:poem_id>', poem_detail_view),
     path('poems', poem_list_view),
-    path ('create', poem_create_view)
+    path ('create', poem_create_view),
+  
 ]
