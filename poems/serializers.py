@@ -5,7 +5,7 @@ from .models import Poem
 class PoemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Poem
-        fields = ['title', 'content']
+        fields = ['id','title', 'content']
     
     def validate_content(self, value):
         if 'bitch' in value:

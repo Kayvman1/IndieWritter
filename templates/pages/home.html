@@ -56,14 +56,13 @@
         
         xhr.onload = function(){
             const serverResponse = xhr.response
-            const listedItems = serverResponse.response
+            const listedItems = serverResponse
             var finalPoemStr = ""
             var i;
             for (i =0 ;  i < listedItems.length; i++){
                 poemObj = listedItems[i]
                 var currItem = formatPoemElement(poemObj)
                 finalPoemStr += currItem
-                console.log("check out geno.cc")
             }
             poemsElement.innerHTML = finalPoemStr
         }
@@ -116,7 +115,7 @@
                 }
             }
 
-            else if (xhr.status ===401){
+            else if (xhr.status ===403){
                 alert ("You Must Login To Publish Your Work")
                 window.location.href= "/login"
             }
@@ -149,14 +148,14 @@
     }
 
 
-    function formatPoemElement(poem){
+function formatPoemElement(poem){
         var formattedPoem = 
         "<div class='col-12 col-md-10 mx-auto border rounded py-3 mb-4' id='poem-"  + poem.id + "'>" + 
-        "<h5>" + poem.title + "</h5>" + 
+        "<h5>" + poem.id + ' ' +  poem.title + "</h5>" + 
         "<p>" +poem.content + "</p>"+
         "<div> " + LikeBtm(poem) +" </div></div>"
         return formattedPoem 
     }   
-
+    console.log("check out geno.cc")
 </script> 
 {% endblock content%}
