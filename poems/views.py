@@ -5,26 +5,49 @@ from .models import Poem
 from .forms import PoemForm
 from django.utils.http import is_safe_url
 from django.conf import settings
+from .serializers import PoemSerializer
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 
 # Create your views here.
-
 def poem_create_view(request, *args, **kwargs):
+   
+    serializer = PoemSerializer( data = request.POST or None)
+    if serializer.is_valid():
+        serializer.save(user= request.user)
+        serializer.save()
+        return JsonResponse(serializer.data, status = 201)
+    return JsonResponse({}, status = 400)
+
+def poem_create_view_pureDjango(request, *args, **kwargs):
+    user = request.user
     form = PoemForm(request.POST or None)
     next_url = request.POST.get("next") or None
+
+    if not request.user.is_authenticated:
+        user = None
+        if request.is_ajax():
+            return JsonResponse({},status =  401 )
+        return redirect(settings.LOGIN_URL)
+
     if form.is_valid():
         obj = form.save(commit=False)
         # do other form related logic
+        obj.user = user 
         obj.save()
+
         if request.is_ajax():
             return JsonResponse(obj.serialize(), status=201) # 201 == created items
+
         if next_url != None and is_safe_url(next_url, ALLOWED_HOSTS):
             return redirect(next_url)
+
         form = PoemForm()
+
     if form.errors:
         if request.is_ajax():
             return JsonResponse(form.errors, status=400)
+
     return render(request, 'components/form.html', context={"form": form})
 
 

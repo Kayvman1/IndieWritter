@@ -26,7 +26,8 @@ SECRET_KEY = '1@a33q+6l=$*i2(gy&&(&z)%$i3bp_+@-#+jef+cjeu1psj!#t'
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1'] #'.indiewritter.com for all of indiewritter
-
+LOGIN_URL = '/login'
+MAX_TITLE_LEN = 1024
 
 # Application definition
 
@@ -39,7 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     #myapps
-    'poems'
+    'poems',
+
+    #thirdparty
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

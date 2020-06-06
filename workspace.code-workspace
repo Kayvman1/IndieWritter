@@ -1,11 +1,10 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"remoteAuthority": "wsl+Ubuntu",
-	"settings": {
-		"python.pythonPath": "/bin/python3"
-	}
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "python.pythonPath": "/bin/python3"
+    }
 }
