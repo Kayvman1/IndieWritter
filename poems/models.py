@@ -24,10 +24,10 @@ class Poem(models.Model):
  #must add null = True
     parent = models.ForeignKey("self", null = True, on_delete = models.SET_NULL)
     title = models.CharField(max_length = settings.MAX_TITLE_LEN, null = False, blank  = False)
-    content = models.TextField() 
+    content = models.TextField(blank = True, null=True) 
     image = models.FileField(upload_to = 'images/', blank =True, null =True  )
     timestamp = models.DateTimeField(auto_now_add=True)
-    likes = models.ManyToManyField(User, related_name='tweet_user', blank=True, through=PoemLike)
+    likes = models.ManyToManyField(User, related_name='poem_user', blank=True, through=PoemLike)
 
     class Meta:
         ordering = ['-id']
@@ -42,3 +42,7 @@ class Poem(models.Model):
     
     def __str__(self):
         return self.title
+    
+    @property
+    def is_repub(self):
+        return self.parent != None

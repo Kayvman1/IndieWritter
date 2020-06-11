@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .forms import PoemForm
 from .models import Poem
-from .serializers import PoemSerializer, PoemActionSerializer
+from .serializers import PoemSerializer, PoemActionSerializer, PoemCreateSerializer
 
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
@@ -24,7 +24,7 @@ def home_view(request, *args, **kwargs):
 #@authentication_classes([SessionAuthentication]) 
 @permission_classes ([IsAuthenticated])
 def poem_create_view(request, *args, **kwargs):
-    serializer = PoemSerializer( data = request.POST)
+    serializer = PoemCreateSerializer( data = request.POST)
 
     if serializer.is_valid(raise_exception = True):
         serializer.save(user= request.user)     
@@ -71,7 +71,9 @@ def poem_action_view(request, *args, **kwargs):
     if serializer.is_valid(raise_exception = True):
         data = serializer.validated_data
         poem_id = data.get("id")
+        content = data.get("content")
         action = data.get("action")
+     
     qs = Poem.objects.filter(id = poem_id)
     
     if not qs.exists():
@@ -83,10 +85,14 @@ def poem_action_view(request, *args, **kwargs):
     elif action == "unlike":
         obj.likes.remove(request.user)
     elif action == "repub":
-        pass #todo
+        new_Poem = Poem.objects.create(
+            user=request.user, 
+            parent=obj,
+            content=content,
+            )
 
  
-
+ 
     return Response({"message":"action   success"}, status = 200  )
 
 

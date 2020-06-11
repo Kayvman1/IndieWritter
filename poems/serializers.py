@@ -8,14 +8,20 @@ POEM_ACTIONS_OPTIONS = settings.POEM_ACTIONS_OPTIONS
 class PoemActionSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     action = serializers.CharField()
-    
+    content = serializers.CharField(allow_blank = True, required = False)
+
+   # title = serializers.CharField(allow_blank = True, required = False)
     def validate_action(self, value):
+
         value = value.lower().strip()
         if not value in POEM_ACTIONS_OPTIONS:
             raise serializers.ValidationError("Unrecognized action")
         return value
 
-class PoemSerializer(serializers.ModelSerializer):
+
+
+
+class PoemCreateSerializer(serializers.ModelSerializer):
     likes = serializers.SerializerMethodField(read_only = True)
     class Meta:
         model = Poem
@@ -33,3 +39,15 @@ class PoemSerializer(serializers.ModelSerializer):
         if len(value) > settings.MAX_TITLE_LEN:
             raise serializers.ValidationError("Your Title is Too Long")
         return value
+
+class PoemSerializer(serializers.ModelSerializer):
+    likes = serializers.SerializerMethodField(read_only = True)
+    parent = PoemCreateSerializer (read_only = True)
+    #is_repub = serializers.SerializerMethodField(read_only = True)
+    class Meta:
+        model = Poem
+        fields = ['id','title', 'content', 'likes','parent','is_repub']
+    
+    def get_likes(self, obj):
+        return obj.likes.count()
+
