@@ -133,29 +133,78 @@
     }
     
 
-    function handleDidLike(poem_id, currentCount){
-        currentCount ++
+    function handlePoemAction(poem_id, currentCount, action){
+        const url = 'api/poems/action'
+        const method = 'POST'
+        const data = JSON.stringify( {
+            id : poem_id,
+            action :action
+        })
+
+        var csrftoken = getCookie('csrftoken');
+        const xhr = new XMLHttpRequest()
+        xhr.open(method, url)
+        xhr.setRequestHeader("Content-Type", "application/json")
+        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+        xhr.setRequestHeader("X-CSRFToken", csrftoken)
+
+        xhr.onload = function (){
+            loadPoems(poemsEl)
+        }
+
+        xhr.send(data)
+
         console.log(poem_id, currentCount)
         return 
     }
 
 
     function LikeBtm(poem){
-        return "<button class = 'btn btn-primary btn-sm' onclick = handleDidLike(" + poem.id + "," + poem.likes + ")> "+
-        poem.likes + " Likes"+
+        return "<button class = 'btn btn-primary btn-sm' onclick = handlePoemAction(" + 
+        poem.id + "," + poem.likes + ",'like')> "+
+        poem.likes +  " Likes"+
          "</button>"
 
     }
+    function UnlikeBtm(poem){
+        return "<button class = 'btn btn-outline-primary btn-sm' onclick = handlePoemAction(" + 
+        poem.id + "," + poem.likes + ",'unlike')> Unlike"+
+         "</button>"
 
+    }
+    function RepubBtm(poem){
+        return "<button class = 'btn btn-outline-success btn-sm' onclick = handlePoemAction(" + 
+        poem.id + "," + poem.likes + ",'like')>Republish</button>"
 
-function formatPoemElement(poem){
+    }
+
+    function formatPoemElement(poem){
         var formattedPoem = 
         "<div class='col-12 col-md-10 mx-auto border rounded py-3 mb-4' id='poem-"  + poem.id + "'>" + 
         "<h5>" + poem.id + ' ' +  poem.title + "</h5>" + 
         "<p>" +poem.content + "</p>"+
-        "<div> " + LikeBtm(poem) +" </div></div>"
+        "<div> " + LikeBtm(poem) + UnlikeBtm(poem) + RepubBtm(poem)+" </div></div>"
         return formattedPoem 
     }   
     console.log("check out geno.cc")
+
+
+    function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+    }
+
 </script> 
 {% endblock content%}

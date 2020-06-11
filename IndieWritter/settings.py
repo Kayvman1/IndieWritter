@@ -28,6 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1'] #'.indiewritter.com for all of indiewritter
 LOGIN_URL = '/login'
 MAX_TITLE_LEN = 1024
+POEM_ACTIONS_OPTIONS = ['like', 'unlike', 'repub']
 
 # Application definition
 

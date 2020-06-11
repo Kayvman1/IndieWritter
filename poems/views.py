@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .forms import PoemForm
 from .models import Poem
-from .serializers import PoemSerializer
+from .serializers import PoemSerializer, PoemActionSerializer
 
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
@@ -59,6 +59,35 @@ def poem_delete_view(request, poem_id, *args, **kwargs):
     obj = qs.first()
     obj.delete
     return Response({"message":"deletion  success"}, status = 200  )
+
+@api_view([ 'POST'])
+@permission_classes([IsAuthenticated])
+def poem_action_view(request, *args, **kwargs):
+    '''
+    id is required
+    possible actions are : like, unlike, republish
+    '''
+    serializer = (PoemActionSerializer(data = request.data))
+    if serializer.is_valid(raise_exception = True):
+        data = serializer.validated_data
+        poem_id = data.get("id")
+        action = data.get("action")
+    qs = Poem.objects.filter(id = poem_id)
+    
+    if not qs.exists():
+        return Response({'message': 'You can not like this'}, 404)
+    obj = qs.first()
+
+    if action == "like":
+        obj.likes.add(request.user)
+    elif action == "unlike":
+        obj.likes.remove(request.user)
+    elif action == "repub":
+        pass #todo
+
+ 
+
+    return Response({"message":"action   success"}, status = 200  )
 
 
 
