@@ -25,8 +25,18 @@ SECRET_KEY = '1@a33q+6l=$*i2(gy&&(&z)%$i3bp_+@-#+jef+cjeu1psj!#t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1'] #'.indiewritter.com for all of indiewritter
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost'] #'.indiewritter.com for all of indiewritter
 LOGIN_URL = '/login'
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_URLS_REGEX = r'^/api/.*'
+'''
+CORS_ORIGIN_WHITELIST = [
+    "https://example.com",
+    "https://sub.example.com",
+    "http://localhost:8080",
+    "http://127.0.0.1:9000"
+]
+'''
 MAX_TITLE_LEN = 1024
 POEM_ACTIONS_OPTIONS = ['like', 'unlike', 'repub']
 
@@ -45,6 +55,7 @@ INSTALLED_APPS = [
 
     #thirdparty
     'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +66,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'IndieWritter.urls'
@@ -126,6 +140,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS=[
+    os.path.join(BASE_DIR, "static")
+]
+
+STATIC_ROOT =    os.path.join(BASE_DIR, "static-root")
+
 
 DEFAULT_RENDERER_CLASSES = [
         'rest_framework.renderers.JSONRenderer',

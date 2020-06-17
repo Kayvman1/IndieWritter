@@ -12,7 +12,7 @@
     </div>
 </div>
 
-<div class = 'row' > 
+<div class = 'row d-none' > 
     <div class = 'col-md-4 mx-auto col-10'>
         <form class = 'form' id= 'poem-create-form' method = 'POST' action = '/create'>
             {% csrf_token %}
@@ -26,7 +26,11 @@
         </form>
     </div>
 </div>
-<div class = 'row' id = 'poems'>
+
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="indiewritter"></div>
+
+<div class = 'row d-none' id = 'poems'>
     Loading ...
 </div>
 
