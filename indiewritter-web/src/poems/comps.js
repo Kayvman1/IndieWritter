@@ -20,17 +20,15 @@ export function PoemsComp (props){
     setNewPoem(tempNewPoems)
   }
 
-  return <div id ='PoemsComp' className = {props.className}>
-  <div id = 'the form' className = 'col-12 mb-3'>
+  return <div className = {props.className}>
+  <div className = 'col-12 mb-3'>
     <form onSubmit = {handleSubmit}>
       <textarea ref = {titleRef} className = 'form-control' name ='title' required={true}></textarea>
       <textarea ref = {contentRef} className = 'form-control' name ='content' required ={true}></textarea>
       <button type = 'submit' className = 'btn btn-primary my-3'> post </button>
     </form>
-  </div>
-  <div id = 'listed poems'>
-    <ListPoem id = 'listed listed poems' newPoems = {newPoems}/>
-  </div>
+    </div>
+    <ListPoem newPoems = {newPoems}/>
   </div>
 }
 
@@ -55,6 +53,7 @@ export  function ListPoem(props){
     
       const myCallback = (response, status) =>{
         if(status === 200){
+          
           setPoemsInit(response)
           setPoemsDidSet(true)
         }
@@ -67,6 +66,10 @@ export  function ListPoem(props){
       }
   }, [poemsInit, poemsDidSet, setPoemsDidSet] )
 
+  console.log(Array.isArray(poems))
+  poems.forEach(e => console.log("TGIS IS AN ELEMETNT \n",e))
+
+  
   return  poems.map((item, index)=>{
       return <Poem poem = {item} className = 'my-5 py-5 border bg-white text-dark' key ={`${index}-item.id`}/>
       }

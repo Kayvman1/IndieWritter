@@ -6,6 +6,7 @@ export function lookup (method, endpoint, callback, data){
     Jdata = JSON.stringify(data)
   }
   const url = `http://127.0.0.1:8000/api${endpoint}/`
+  xhr.responseType = "json"
 
   xhr.open (method, url)
   xhr.onload = function(){
@@ -26,7 +27,7 @@ export function createPoem(newPoem, callback) {
     content : newPoem.content,
     title : newPoem.title
   }
-  lookup("POST", "/poems/create", callback, newPoem )
+  lookup("POST", "/poems/create", callback, data )
 }
 
 export function loadPoems (callback) {
