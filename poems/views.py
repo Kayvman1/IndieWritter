@@ -1,4 +1,6 @@
 import random
+import ast
+
 from django.conf import settings
 from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render, redirect
@@ -24,8 +26,13 @@ def home_view(request, *args, **kwargs):
 #@authentication_classes([SessionAuthentication]) 
 @permission_classes ([IsAuthenticated])
 def poem_create_view(request, *args, **kwargs):
-    serializer = PoemCreateSerializer( data = request.POST)
+    dict_str = request.body.decode("UTF-8")
+    mydata = ast.literal_eval(dict_str)
 
+    serializer = PoemCreateSerializer( data = mydata)
+    print("---------------------------------------------------------------------")
+    print(mydata, "asd",  type(mydata))
+    print("---------------------------------------------------------------------")
     if serializer.is_valid(raise_exception = True):
         serializer.save(user= request.user)     
         return Response (serializer.data, status = 201)

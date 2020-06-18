@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {loadPoems} from '../lookup'
+import {loadPoems, createPoem} from '../lookup'
 
 export function PoemsComp (props){
   const titleRef = React.createRef()
@@ -9,13 +9,24 @@ export function PoemsComp (props){
   const handleSubmit = (event) =>{
     event.preventDefault()
     console.log(event)
+    let title = titleRef.current.value
+    let content = contentRef.current.value
+    
     let tempNewPoems = [...newPoems]
-    tempNewPoems.unshift({
-      title : 'poop',
-      content : 'nopoop',
-      id : '12412424',
-      like: '124'
+    createPoem({title: title, content: content}, (response, status)=>{
+      if (status ===201){
+      tempNewPoems.unshift({
+          title : title,
+          content : content,
+          id : '12412424',
+          like: '124'
+        })
+      }else{
+        alert("this is debug alert 1 comps.js in src poems\n")
+        console.log(response)
+      }
     })
+
 
     setNewPoem(tempNewPoems)
   }
@@ -66,14 +77,10 @@ export  function ListPoem(props){
       }
   }, [poemsInit, poemsDidSet, setPoemsDidSet] )
 
-  console.log(Array.isArray(poems))
-  poems.forEach(e => console.log("TGIS IS AN ELEMETNT \n",e))
-
   
   return  poems.map((item, index)=>{
       return <Poem poem = {item} className = 'my-5 py-5 border bg-white text-dark' key ={`${index}-item.id`}/>
-      }
-    )
+      })
   }
 
  
@@ -115,4 +122,3 @@ export  function Poem(props){
       </div>
     </div>
   }
-  

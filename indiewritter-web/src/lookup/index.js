@@ -1,5 +1,6 @@
-import {loadPoems} from './comps'
+import {loadPoems,createPoem} from './comps'
 
 export{
-    loadPoems
+    loadPoems,
+    createPoem
 }
