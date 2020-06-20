@@ -1,18 +1,12 @@
-export function lookup (method, endpoint, callback, data){
-  let Jdata ;
-  
-  if (data){
-    Jdata = JSON.stringify(data)
-  }
-  
-  console.log(data)
+export function backendLookup (method, endpoint, callback, data){
+  let JsonData
+  if (data) JsonData = JSON.stringify(data)
   const xhr = new XMLHttpRequest()
   const url = `http://127.0.0.1:8000/api${endpoint}/`
-  xhr.responseType = "json"
   const csrftoken = getCookie('csrftoken');
 
+  xhr.responseType = "json"
   xhr.open (method, url)
-
   xhr.setRequestHeader("Content-Type", "application/json")
 
   if (csrftoken){
@@ -23,26 +17,13 @@ export function lookup (method, endpoint, callback, data){
   xhr.onload = function(){
     callback(xhr.response, xhr.status)
   }
-
   xhr.onerror = function(e){
     console.log(e)
     callback({"message": "The request was an error"}, 400)
   }
-
-  
-  xhr.send(Jdata)
-  console.log(Jdata)
+  xhr.send(JsonData)
 }
 
-export function createPoem(newPoem, callback) {
-  console.log(newPoem)
-
-  lookup("POST", "/poems/create", callback, newPoem)
-}
-
-export function loadPoems (callback) {
-  lookup('GET', '/poems', callback)
-}
 
 function getCookie(name) {
   var cookieValue = null;

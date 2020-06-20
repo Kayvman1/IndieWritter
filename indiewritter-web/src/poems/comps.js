@@ -1,34 +1,28 @@
 import React, {useEffect, useState} from 'react'
-import {loadPoems, createPoem} from '../lookup'
+import {apiPoemList, apiPoemCreate,apiPoemAction} from './lookup'
 
 export function PoemsComp (props){
   const titleRef = React.createRef()
   const contentRef = React.createRef()
   const [newPoems,setNewPoem] = useState([])
 
-  const handleSubmit = (event) =>{
-    event.preventDefault()
-    console.log(event)
-    let title = titleRef.current.value
-    let content = contentRef.current.value
-    
+  const handleBackendUpdate = (response, status) =>{
+    //backend api response handler
     let tempNewPoems = [...newPoems]
-    createPoem({title: title, content: content}, (response, status)=>{
-      if (status ===201){
-      tempNewPoems.unshift({
-          title : title,
-          content : content,
-          id : '12412424',
-          like: '124'
-        })
+    if (status ===201){
+      tempNewPoems.unshift(response)
+      setNewPoem(tempNewPoems)
       }else{
         alert("this is debug alert 1 comps.js in src poems\n")
         console.log(response)
       }
-    })
-
-
-    setNewPoem(tempNewPoems)
+  }
+  //backend api request
+  const handleSubmit = (event) =>{
+    event.preventDefault()
+    let title = titleRef.current.value
+    let content = contentRef.current.value
+    apiPoemCreate({title: title, content: content}, handleBackendUpdate)
   }
 
   return <div className = {props.className}>
@@ -43,12 +37,10 @@ export function PoemsComp (props){
   </div>
 }
 
-
 export  function ListPoem(props){
   const [poemsInit, setPoemsInit] = useState([])
   const [poems, setPoems] = useState([])
   const [poemsDidSet, setPoemsDidSet] = useState(false)
-
 
   useEffect( ()=>{
     const final = [...props.newPoems].concat(poemsInit)
@@ -57,68 +49,73 @@ export  function ListPoem(props){
     }
   },[poemsInit, props.newPoems, poems])
 
-
   useEffect(() => {
     if (poemsDidSet ===false){
-
-    
-      const myCallback = (response, status) =>{
+      const handlePoemList = (response, status) =>{
         if(status === 200){
-          
           setPoemsInit(response)
           setPoemsDidSet(true)
-        }
-        else{
+        }else{
           alert ("There was an error")
         }
       }
-      loadPoems(myCallback)
-      
-      }
+      apiPoemList(handlePoemList)
+    }
   }, [poemsInit, poemsDidSet, setPoemsDidSet] )
 
-  
   return  poems.map((item, index)=>{
-      return <Poem poem = {item} className = 'my-5 py-5 border bg-white text-dark' key ={`${index}-item.id`}/>
-      })
+    return <Poem poem = {item} className = 'my-5 py-5 border bg-white text-dark' key ={`${index}-item.id`}/>
+    })
   }
 
- 
 export function ActionBtn(props){
     const className = props.className ? props.className : 'btn btn-primary btn-sm'
     const {poem,action} = props
     const actionDisplay = action.display? action.display: 'action'
-    const [userLike, setUserLike] = useState(poem.userLike === true ? true : false)
+    //const [userLike, setUserLike] = useState(poem.userLike === true ? true : false)
     const [likes,setLikes] = useState( poem.likes ? poem.likes : 0)
-
     const display = action.type === 'like' ? `${action.display} ${likes}`: actionDisplay
+
+    const handleApiActionEvent = (response,status)=>{
+      console.log(response, status)
+      if (status === 200){
+        setLikes(response.likes)
+        //setUserLike (true)
+      }
+    }
     const handleClick = (event) => {
       event.preventDefault()
-      if (action.type === 'like'){
-        if (userLike === true){
-          setLikes(likes - 1)
-          setUserLike (false)
-        }else {
-          setLikes(likes + 1)
-          setUserLike ( true )         
-        }
-      }}
+      apiPoemAction(poem.id, action.type, handleApiActionEvent)
+
+    }
     return  <button className = {className}  onClick = {handleClick}>    {display} </button>
-  
   }
+
+function ParentPoem (props) {
+  const {poem} =props 
   
+  return poem.parent ? <div className = 'row'> 
+  <div id = 'PoemParent' className ={'col-11 mx-auto p-3 border rounded'}>
+  <p className = 'mb-0 text-muted small'>repost</p> 
+  <Poem poem = {poem.parent} className = {''} /> 
+  </div>
+  </div>
+  :
+  null
+}
 export  function Poem(props){
     const {poem} = props
     const className = props.className ? props.className : 'col-10 mx-auto col-md-6'
     return <div className = {className}>
-      <h4>{poem.title}</h4> 
+    <div id = 'Poem'>
+      <h4>{poem.id} - {poem.title}</h4> 
       <p>{poem.content}</p>
-      <div className = 'btn btn-group'>
+        <ParentPoem poem = {poem}/>
+      </div>
+      <div id = 'action buttons' className = 'btn btn-group'>
         <ActionBtn poem = {poem} action ={{type:"like", display : 'Likes'}}/>
         <ActionBtn poem = {poem} action ={{type:"unlike", display: 'Unlike'}}/>
         <ActionBtn poem = {poem} action ={{type:"repub", display: 'Repub'}}/>
-
-        
       </div>
     </div>
   }

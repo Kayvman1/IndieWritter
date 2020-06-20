@@ -28,7 +28,7 @@ def home_view(request, *args, **kwargs):
 def poem_create_view(request, *args, **kwargs):
     dict_str = request.body.decode("UTF-8")
     mydata = ast.literal_eval(dict_str)
-
+    #you can just use request.data
     serializer = PoemCreateSerializer( data = mydata)
     print("---------------------------------------------------------------------")
     print(mydata, "asd",  type(mydata))
@@ -89,18 +89,21 @@ def poem_action_view(request, *args, **kwargs):
 
     if action == "like":
         obj.likes.add(request.user)
+        serializer = PoemSerializer(obj)
     elif action == "unlike":
         obj.likes.remove(request.user)
+        serializer = PoemSerializer(obj)
     elif action == "repub":
         new_Poem = Poem.objects.create(
             user=request.user, 
             parent=obj,
             content=content,
             )
+        serializer = PoemSerializer(new_Poem)
 
  
  
-    return Response({"message":"action   success"}, status = 200  )
+    return Response(serializer.data, status = 200  )
 
 
 
