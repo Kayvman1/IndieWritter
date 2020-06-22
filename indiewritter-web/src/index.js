@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {PoemsComp} from './poems'
+// eslint-disable-next-line
+import {PoemsComp, PoemDetailComp} from './poems'
  
 const appEl = document.getElementById('root')
 if(appEl){
@@ -11,11 +12,18 @@ if(appEl){
 
 }
 
+const e = React.createElement
+
 const poemEl = document.getElementById("indiewritter")
 if (poemEl){
-  ReactDOM.render(<PoemsComp/>, poemEl)
+  ReactDOM.render(e(PoemsComp, poemEl.dataset), poemEl);
 }
 
+ const poemDetailEl = document.querySelectorAll(".indiewritter-detail")
+
+poemDetailEl.forEach(container=>{
+ ReactDOM.render(e(PoemDetailComp, container.dataset), container);
+})
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

@@ -20,9 +20,9 @@ urlpatterns = [
     path ('create/', poem_create_view),
     path('action/', poem_action_view),
     path('<int:poem_id>/', poem_detail_view),
-    path('<int:poem_id>/', poem_detail_view),
-    path('api/poems/<int:poem_id>/delete/', poem_delete_view)  
+    #path('<int:poem_id>/', poem_detail_view),
+    path('<int:poem_id>/delete/', poem_delete_view)  
 ]
 
-if settings.DEBUG:
-    urlpatterns +=  static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+#if settings.DEBUG:
+    #urlpatterns +=  static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

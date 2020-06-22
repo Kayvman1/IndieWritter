@@ -1,8 +1,14 @@
-import {ActionBtn, Poem, ListPoem, PoemsComp} from './comps'
+import {ActionBtn} from './buttons'
+import {ListPoem} from './list'
+import {Poem} from './detail'
+import {PoemsComp, PoemDetailComp} from './comps'
+import{PoemCreate} from './create'
 
 export{
     ActionBtn,
     Poem,
     ListPoem,
-    PoemsComp
+    PoemsComp,
+    PoemCreate,
+    PoemDetailComp
 }

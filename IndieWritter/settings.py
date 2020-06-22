@@ -25,10 +25,31 @@ SECRET_KEY = '1@a33q+6l=$*i2(gy&&(&z)%$i3bp_+@-#+jef+cjeu1psj!#t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost'] #'.indiewritter.com for all of indiewritter
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*'] #'.indiewritter.com for all of indiewritter
 LOGIN_URL = '/login'
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_URLS_REGEX = r'^/api/.*'
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    '*'
+)
+CORS_PREFLIGHT_MAX_AGE = 10000000000000000000
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+CORS_URLS_REGEX = r'^/.*'
 '''
 CORS_ORIGIN_WHITELIST = [
     "https://example.com",

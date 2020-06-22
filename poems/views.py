@@ -31,7 +31,7 @@ def poem_create_view(request, *args, **kwargs):
     #you can just use request.data
     serializer = PoemCreateSerializer( data = mydata)
     print("---------------------------------------------------------------------")
-    print(mydata, "asd",  type(mydata))
+    print(mydata, "create",  type(mydata))
     print("---------------------------------------------------------------------")
     if serializer.is_valid(raise_exception = True):
         serializer.save(user= request.user)     
@@ -39,14 +39,25 @@ def poem_create_view(request, *args, **kwargs):
     
     return Response({}, status = 400)
 
-@api_view  (['GET'])
+@api_view  (['GET', 'OPTION'])
 def poem_list_view(request, *args, **kwargs):
+    print('-------------------------------------------')
+    print("list")
+    print('-------------------------------------------')
+    username = request.GET.get('username')
     qs = Poem.objects.all()
+    if username != None:
+        qs = qs.filter(user__username__iexact=username)
     serializer = PoemSerializer(qs, many = True)
     return Response(serializer.data, status = 200)
 
-@api_view(['GET'])
+
+@api_view(['GET','OPTIONS'])
 def poem_detail_view(request, poem_id, *args, **kwargs):
+    
+    print('-------------------------------------------')
+    print("detail")
+    print('-------------------------------------------')
     qs = Poem.objects.filter(id = poem_id)
     if not qs.exists():
         return Response({"message": "Poem not found"}, status = 404)
@@ -59,6 +70,9 @@ def poem_detail_view(request, poem_id, *args, **kwargs):
 @api_view(['DELETE', 'POST'])
 @permission_classes([IsAuthenticated])
 def poem_delete_view(request, poem_id, *args, **kwargs):
+    print('-------------------------------------------')
+    print("delete")
+    print('-------------------------------------------')
     qs = Poem.objects.filter(id = poem_id)
     if not qs.exists():
         return Response({'message': 'You can not delete this'}, 401)
@@ -74,6 +88,9 @@ def poem_action_view(request, *args, **kwargs):
     id is required
     possible actions are : like, unlike, republish
     '''
+    print('-------------------------------------------')
+    print("action")
+    print('-------------------------------------------')
     serializer = (PoemActionSerializer(data = request.data))
     if serializer.is_valid(raise_exception = True):
         data = serializer.validated_data
@@ -184,3 +201,10 @@ def poem_detail_view_PD(request, poem_id, *args, **kwargs):
     return JsonResponse(data, status = status)
 
    # return HttpResponse(f"<h1> hello freak bitches {poem_id} - {obj.content}</h1>" )
+def dispatch(self, request, *args, **kwargs):
+    print("ad")
+    if request.method.lower() in self.http_method_names:
+        handler = getattr(self, request.method.lower(), self.http_method_not_allowed)
+    else:
+        handler = self.http_method_not_allowed
+    return handler(request, *args, **kwargs)
