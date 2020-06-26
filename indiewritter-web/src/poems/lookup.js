@@ -1,11 +1,11 @@
 import {backendLookup} from '../backendLookup'
 
 export function apiPoemAction (poemID, action, callback) {
-  backendLookup('POST', '/poems/action', callback, {id:poemID, action:action })
+  backendLookup('POST', '/poems/action/', callback, {id:poemID, action:action })
 }
 
 export function apiPoemCreate(newPoem, callback) {
-    backendLookup("POST", "/poems/create", callback, newPoem)
+    backendLookup("POST", "/poems/create/", callback, newPoem)
   }
   
 export function apiPoemDetail (poemId, callback) {

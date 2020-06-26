@@ -29,7 +29,7 @@ export function PoemCreate (props){
     return (
     <div id = 'form div' className ={props.className}>
       <form onSubmit = {handleSubmit}>
-        <textarea ref = {titleRef} placeholder='title' className = 'form-control' name ='title' required={true}></textarea>
+        <textarea ref = {titleRef} placeholder='titleREACT' className = 'form-control' name ='title' required={true}></textarea>
         <textarea ref = {contentRef} className = 'form-control' name ='content' required ={true}></textarea>
         <button type = 'submit' className = 'btn btn-primary my-3'> post </button>
       </form>

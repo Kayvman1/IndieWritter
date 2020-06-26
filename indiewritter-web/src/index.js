@@ -2,29 +2,36 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import { PoemsComp, PoemDetailComp} from './poems'
 import * as serviceWorker from './serviceWorker';
-// eslint-disable-next-line
-import {PoemsComp, PoemDetailComp} from './poems'
- 
+
 const appEl = document.getElementById('root')
-if(appEl){
-  ReactDOM.render(<App/>, appEl)
-
+if (appEl) {
+    ReactDOM.render(<App />, appEl);
 }
-
 const e = React.createElement
-
-const poemEl = document.getElementById("indiewritter")
-if (poemEl){
-  ReactDOM.render(e(PoemsComp, poemEl.dataset), poemEl);
+const tweetsEl = document.getElementById("indiewritter")
+if (tweetsEl) {
+    ReactDOM.render(
+        e(PoemsComp, tweetsEl.dataset), tweetsEl);
 }
 
- const poemDetailEl = document.querySelectorAll(".indiewritter-detail")
+ const poemDetailEls = document.querySelectorAll(".poem-detail")
 
-poemDetailEl.forEach(container=>{
- ReactDOM.render(e(PoemDetailComp, container.dataset), container);
-})
+    poemDetailEls.forEach(container =>{
+        ReactDOM.render(
+            e(PoemDetailComp, container.dataset),
+        container); 
 
+    })
+
+ 
+//tweetDetailElements.forEach(container=> {
+    //ReactDOM.render( e(PoemDetailComp, container.dataset), 
+ //container);
+//})
+
+ 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA

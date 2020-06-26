@@ -2,7 +2,7 @@ export function backendLookup (method, endpoint, callback, data){
   let JsonData
   if (data) JsonData = JSON.stringify(data)
   const xhr = new XMLHttpRequest()
-  const url = `http://127.0.0.1:8000/api${endpoint}`
+  const url = `http://localhost:8000/api${endpoint}`
   const csrftoken = getCookie('csrftoken');
 
   xhr.responseType = "json"
@@ -10,16 +10,16 @@ export function backendLookup (method, endpoint, callback, data){
   xhr.setRequestHeader("Content-Type", "application/json")
  
  
-  console.log(url)
+
 
 
 
   if (csrftoken){
-    xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+   // xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
     xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
     xhr.setRequestHeader("X-CSRFToken", csrftoken)
-  }else 
-    console.log("peepee")
+  }
+   
   xhr.onload = function(){
     callback(xhr.response, xhr.status)
   }
@@ -27,8 +27,9 @@ export function backendLookup (method, endpoint, callback, data){
     console.log(e)
     callback({"message": "The request was an error"}, 400)
   }
-  console.log(xhr)
+  
   xhr.send(JsonData)
+
 }
 
 

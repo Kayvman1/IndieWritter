@@ -37,14 +37,13 @@ export function PoemsComp (props){
 
 export function PoemDetailComp  (props) {
   const {poemId} = props
-  console.log(props)
-
   const [poem, SetPoem] = useState(null)
   const [didLookup, setDidLookup] = useState(false)
 
   const handleLookup = (response, status)=>{
     if (status === 200)
       SetPoem(response)
+    else
       alert ("Debug Error src/poems/comps.js")
     }
   useEffect(()=>{

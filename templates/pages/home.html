@@ -6,13 +6,17 @@
 
 {%block content%}
 
+
 <div class = 'row text-center'>
     <div class = 'col' >
         <h1>Welcome to IndieWriter</h1>
     </div>
 </div>
 
-<div class = 'row ' > 
+
+<div class ='' id="indiewritter" data-id = '192' data-username = 'kayvman' data-postprem = 'true'></div>
+
+<div class = 'row d-none' > 
     <div class = 'col-md-4 mx-auto col-10'>
         <form class = 'form' id= 'poem-create-form' method = 'POST' action = '/create'>
             {% csrf_token %}
@@ -28,7 +32,7 @@
 </div>
 
 <noscript>You need to enable JavaScript to run this app.</noscript>
-<div id="indiewritter"></div>
+
 
 <div class = 'row d-none' id = 'poems'>
     Loading ...

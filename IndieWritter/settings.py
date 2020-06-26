@@ -9,10 +9,10 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+# remember on same level as manage.py
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -20,46 +20,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '1@a33q+6l=$*i2(gy&&(&z)%$i3bp_+@-#+jef+cjeu1psj!#t'
+SECRET_KEY = '#)=h)_wc*k%f=wk+!$x0t%1wx7*_50$a1%*75s$og(8$27$ju1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*'] #'.indiewritter.com for all of indiewritter
-LOGIN_URL = '/login'
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_HEADERS = (
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-    '*'
-)
-CORS_PREFLIGHT_MAX_AGE = 10000000000000000000
-CORS_ALLOW_METHODS = [
-    'DELETE',
-    'GET',
-    'OPTIONS',
-    'PATCH',
-    'POST',
-    'PUT',
-]
-CORS_URLS_REGEX = r'^/.*'
-'''
-CORS_ORIGIN_WHITELIST = [
-    "https://example.com",
-    "https://sub.example.com",
-    "http://localhost:8080",
-    "http://127.0.0.1:9000"
-]
-'''
+ALLOWED_HOSTS = ['127.0.0.1', '.cfe.sh', 'localhost']
+LOGIN_URL = "/login"
+
 MAX_TITLE_LEN = 1024
 POEM_ACTIONS_OPTIONS = ['like', 'unlike', 'repub']
+
 
 # Application definition
 
@@ -70,26 +41,22 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    #myapps
-    'poems',
-
-    #thirdparty
-    'rest_framework',
+    # third-party
     'corsheaders',
+    'rest_framework',
+    # internal
+    'poems',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'IndieWritter.urls'
@@ -111,7 +78,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'IndieWritter.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -161,33 +127,33 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS=[
-    os.path.join(BASE_DIR, "static")
-]
 
-STATIC_ROOT =    os.path.join(BASE_DIR, "static-root")
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+STATIC_ROOT = os.path.join(BASE_DIR, "static-root")
+
+
+CORS_ORIGIN_ALLOW_ALL = True # any website has access to my api
+CORS_URLS_REGEX = r'^/api/.*$'
 
 
 DEFAULT_RENDERER_CLASSES = [
         'rest_framework.renderers.JSONRenderer',
-]
+    ]
 
 DEFAULT_AUTHENTICATION_CLASSES = [
-        'rest_framework.authentication.SessionAuthentication'
-        ]
-
+    'rest_framework.authentication.SessionAuthentication'
+]
 if DEBUG:
-     DEFAULT_RENDERER_CLASSES += [
-         'rest_framework.renderers.BrowsableAPIRenderer',
-        ]
-     DEFAULT_AUTHENTICATION_CLASSES += [
+    DEFAULT_RENDERER_CLASSES += [
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ]
+    DEFAULT_AUTHENTICATION_CLASSES += [
         'IndieWritter.rest_api.dev.DevAuthentication'
-        ]
-
-
+    ]
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': DEFAULT_AUTHENTICATION_CLASSES
-    ,    
-     
-    'DEFAULT_RENDERER_CLASSES':DEFAULT_RENDERER_CLASSES
+    
+    'DEFAULT_AUTHENTICATION_CLASSES': DEFAULT_AUTHENTICATION_CLASSES,
+    'DEFAULT_RENDERER_CLASSES': DEFAULT_RENDERER_CLASSES
 }
