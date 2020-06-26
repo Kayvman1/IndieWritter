@@ -20,12 +20,9 @@ from ..serializers import PoemSerializer, PoemActionSerializer, PoemCreateSerial
 #@authentication_classes([SessionAuthentication]) 
 @permission_classes ([IsAuthenticated])
 def poem_create_view(request, *args, **kwargs):
-    dict_str = request.body.decode("UTF-8")
-    mydata = ast.literal_eval(dict_str)
-    #you can just use request.data
-    serializer = PoemCreateSerializer( data = mydata)
+    serializer = PoemCreateSerializer( data = request.data)
     print("---------------------------------------------------------------------")
-    print(mydata, "create",  type(mydata))
+    print("create")
     print("---------------------------------------------------------------------")
     if serializer.is_valid(raise_exception = True):
         serializer.save(user= request.user)     
