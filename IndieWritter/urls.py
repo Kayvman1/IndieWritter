@@ -24,6 +24,8 @@ from poems.views import (
     local_poem_detail,
     local_poem_profile,
     )
+from accounts.views import (login_view,logout_view,register_view)
+
 from django.views.generic import TemplateView
 
 
@@ -32,8 +34,12 @@ urlpatterns = [
     path('', local_poem_list),
     path('home', home_view),
     path('<int:poem_id>/', local_poem_detail),
-    path('profile/<str:username>',local_poem_profile),
-    path('api/poems/', include('poems.api.urls'))
+    re_path(r'profiles?/',include('profiles.urls')),
+    path('api/poems/', include('poems.api.urls')),
+    path('login', login_view),
+    path('logout', logout_view),
+    path('register', register_view),
+    
   
 ]
 if settings.DEBUG:

@@ -17,7 +17,7 @@ class PoemLike(models.Model):
 
 
 class Poem(models.Model):
-    user = models.ForeignKey(User,  on_delete = models.CASCADE)
+    user = models.ForeignKey(User,  on_delete = models.CASCADE, related_name='poems')
  #on delete = casade deletes everything
  #you can just backup the server to keep these tweets
  #set null keeps the work but assings the user asa null
