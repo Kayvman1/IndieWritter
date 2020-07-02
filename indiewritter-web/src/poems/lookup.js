@@ -13,11 +13,20 @@ export function apiPoemDetail (poemId, callback) {
     backendLookup('GET', endpoint, callback)
   }
 
-  export function apiPoemList (username, callback) {
+  export function apiPoemList (username, callback, nextUrl) {
     let endpoint ='/poems'
-    
     if (username) endpoint =`/poems/?username=${username}`
-      
+    if(nextUrl!== null && nextUrl !== undefined){
+      endpoint = nextUrl.replace("http://localhost:8000/api","")
+    }
     backendLookup('GET', endpoint, callback)
   }
+  export function apiPoemFeed (callback, nextUrl) {
+    let endpoint ='/poems/feed'
+    if(nextUrl!== null && nextUrl !== undefined){
+      endpoint = nextUrl.replace("http://localhost:8000/api","")
+    }
+    backendLookup('GET', endpoint, callback)
+  }
+  
   

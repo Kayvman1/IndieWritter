@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react'
-import {apiPoemList, } from './lookup'
+import {apiPoemFeed, } from './lookup'
 import {Poem} from './detail'
 
-export  function ListPoem(props){
+export  function FeedList(props){
     const [poemsInit, setPoemsInit] = useState([])
     const [poems, setPoems] = useState([])
     const [nextUrl, setNextUrl] = useState(null)
@@ -25,7 +25,7 @@ export  function ListPoem(props){
           }else
             alert ("Debug Error src/poems/list.js")
         }
-        apiPoemList(username, handlePoemList)
+        apiPoemFeed( handlePoemList)
       }
     }, [poemsInit, poemsDidSet, setPoemsDidSet, username] )
   
@@ -52,7 +52,7 @@ export  function ListPoem(props){
             alert ("Debug Error src/poems/list.js")
         
         }
-        apiPoemList(props.username,handleLoadUpdate, nextUrl)
+        apiPoemFeed(handleLoadUpdate, nextUrl)
       }
     }
     return <React.Fragment> {

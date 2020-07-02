@@ -10,6 +10,7 @@ from .views import (
     poem_create_view, 
     poem_delete_view, 
     poem_action_view,
+    poem_feed_view,
     
 )
 
@@ -19,5 +20,6 @@ urlpatterns = [
     path ('create/', poem_create_view),
     path('action/', poem_action_view),
     path('<int:poem_id>/', poem_detail_view),
-    path('<int:poem_id>/delete/', poem_delete_view)  
+    path('<int:poem_id>/delete/', poem_delete_view),
+    path('feed', poem_feed_view)  
 ]

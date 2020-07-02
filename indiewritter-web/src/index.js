@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { PoemsComp, PoemDetailComp} from './poems'
+import { PoemsComp, PoemDetailComp, FeedComp} from './poems'
 import * as serviceWorker from './serviceWorker';
 
 const appEl = document.getElementById('root')
@@ -10,10 +10,16 @@ if (appEl) {
     ReactDOM.render(<App />, appEl);
 }
 const e = React.createElement
-const tweetsEl = document.getElementById("indiewritter")
-if (tweetsEl) {
+const poemsEl = document.getElementById("indiewritter")
+if (poemsEl) {
     ReactDOM.render(
-        e(PoemsComp, tweetsEl.dataset), tweetsEl);
+        e(PoemsComp, poemsEl.dataset), poemsEl);
+}
+
+const poemsFeedEl = document.getElementById("indiewritter-feed")
+if (poemsFeedEl) {
+    ReactDOM.render(
+        e(FeedComp, poemsFeedEl.dataset), poemsFeedEl);
 }
 
  const poemDetailEls = document.querySelectorAll(".poem-detail")

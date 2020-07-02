@@ -6,6 +6,7 @@ from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.utils.http import is_safe_url
 
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -40,8 +41,23 @@ def poem_list_view(request, *args, **kwargs):
     if username != None:
         qs = qs.filter(user__username__iexact=username)
     serializer = PoemSerializer(qs, many = True)
+
+    return get_paginated_queryset_response(qs, request)
     return Response(serializer.data, status = 200)
 
+@api_view  (['GET', 'OPTION'])
+@permission_classes ([IsAuthenticated])
+def poem_feed_view(request, *args, **kwargs):
+    paginator= PageNumberPagination()
+    paginator.page_size = 20 
+    print('-------------------------------------------')
+    print("feed")
+    print('-------------------------------------------')
+
+    user = request.user
+    qs = Poem.objects.feed(user)
+
+    return get_paginated_queryset_response(qs, request)
 
 @api_view(['GET','OPTIONS'])
 def poem_detail_view(request, poem_id, *args, **kwargs):
@@ -112,4 +128,12 @@ def poem_action_view(request, *args, **kwargs):
  
  
     return Response(serializer.data, status = 200  )
+
+
+def get_paginated_queryset_response(qs, request):
+    paginator = PageNumberPagination()
+    paginator.page_size = 20
+    paginated_qs = paginator.paginate_queryset(qs, request)
+    serializer = PoemSerializer(paginated_qs, many=True)
+    return paginator.get_paginated_response(serializer.data) # Response( serializer.data, status=200)
 

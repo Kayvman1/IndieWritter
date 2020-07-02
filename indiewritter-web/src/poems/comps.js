@@ -1,6 +1,7 @@
 import React, {useEffect,useState} from 'react'
 import {ListPoem} from './list'
 import {PoemCreate} from './create'
+import {FeedList} from './feed'
 
 
 import {Poem} from './detail'
@@ -34,6 +35,29 @@ export function PoemsComp (props){
     <ListPoem newPoems = {newPoems} username = {username}/>
   </div>)
 }
+
+export function FeedComp (props){
+  const [newPoems,setNewPoem] = useState([])
+  const {username, postprem} = props
+  const canPost = postprem === "true" ? true : false
+
+  const handleNewPoem = (newPoem)=>{
+    let tempNewPoems = [...newPoems]
+    tempNewPoems.unshift(newPoem)
+    setNewPoem(tempNewPoems)
+  }
+
+
+  return (
+  <div className = {props.className}>
+    {
+    canPost === true && 
+    <PoemCreate didPost = {handleNewPoem}  className='col-12 mb-3'/>
+    }
+    <FeedList newPoems = {newPoems} username = {username}/>
+  </div>)
+}
+
 
 export function PoemDetailComp  (props) {
   const {poemId} = props

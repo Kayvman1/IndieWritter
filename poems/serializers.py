@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.conf import settings
 from .models import Poem
+from profiles.serializers import PublicProfileSerializer
 
 MAX_TITLE_LEN = settings.MAX_TITLE_LEN
 POEM_ACTIONS_OPTIONS = settings.POEM_ACTIONS_OPTIONS
@@ -22,10 +23,12 @@ class PoemActionSerializer(serializers.Serializer):
 
 
 class PoemCreateSerializer(serializers.ModelSerializer):
+    user = PublicProfileSerializer(source = 'user.profile', read_only = True)
     likes = serializers.SerializerMethodField(read_only = True)
     class Meta:
         model = Poem
-        fields = ['id','title', 'content', 'likes']
+        fields = ['user','id','title', 'content', 'likes', 'timestamp']
+
     
     def get_likes(self, obj):
         return obj.likes.count()
@@ -39,15 +42,33 @@ class PoemCreateSerializer(serializers.ModelSerializer):
         if len(value) > settings.MAX_TITLE_LEN:
             raise serializers.ValidationError("Your Title is Too Long")
         return value
+    
+    def get_user(self, obj):
+        return obj.user.id
+
+ 
 
 class PoemSerializer(serializers.ModelSerializer):
+    user = PublicProfileSerializer(source = 'user.profile', read_only = True)
     likes = serializers.SerializerMethodField(read_only = True)
     parent = PoemCreateSerializer (read_only = True)
     #is_repub = serializers.SerializerMethodField(read_only = True)
     class Meta:
         model = Poem
-        fields = ['id','title', 'content', 'likes','parent','is_repub']
+        fields = [
+            'user',
+            'id',
+            'title', 
+            'content', 
+            'likes',
+            'parent',
+            'is_repub',
+            'timestamp']
     
     def get_likes(self, obj):
         return obj.likes.count()
 
+    def get_user(self, obj):
+        return obj.user.id
+
+ 

@@ -2,23 +2,25 @@ import React, { useState} from 'react'
 //import {useEffect} from 'react'
 
 import {ActionBtn} from './buttons'
-
+import {UserLink, UserPicture} from '../profiles'
 export function ParentPoem (props) {
     const {poem} =props 
     
     return (poem.parent ? 
-      <div className = 'row'> 
-        <div id = 'PoemParent' className ={'col-11 mx-auto p-3 border rounded'}>
-          <p className = 'mb-0 text-muted small'>repost (somehow link to og post to interact with)</p> 
-          <Poem poem = {poem.parent} className = {''} hideActions = {true} /> 
+      
+        <div id = 'PoemParent' className= "p-2 border rounded mt-4 ml-3" > 
+           <p className = 'mb-4 small'/>
+           <UserLink is_repub = {poem.is_repub} user = {poem.user}></UserLink>
+          <Poem poem = {poem.parent} className = {''} hideActions = {true} isRepub={true}/> 
         </div>
-      </div> 
+      
       :null)
   }
-  export  function Poem(props){
+export  function Poem(props){
     const {poem, didRepost, hideActions} = props
     const [actionPoem, setActionPoem] = useState(poem ? poem : null)
-    const className = props.className ? props.className : 'col-10 mx-auto col-md-6'
+    let className = props.className ? props.className : 'col-10 mx-5 pt-3 col-md-6'
+   // className = isRepub === true ? `${className}   : className
     const path = window.location.pathname
     var idRegex = /^[/](\d+)/
     let match = path.match(idRegex)
@@ -44,13 +46,21 @@ export function ParentPoem (props) {
   
     return (
     <div className = {className}>
+    <div className = 'd-flex'>
+    <div className = ' mx-1'>
+      <UserPicture user = {poem.user} hideActions = {hideActions}></UserPicture>
+    </div>
+
+    <div className = 'col-11 '>
       <div id = 'Poem'>
-        <h4>{poem.id} - {poem.title}</h4> 
-        <p>{poem.content}</p>
+        <h3>{poem.id}-{poem.title}</h3>
+        <UserLink is_repub = {poem.is_repub} user = {poem.user}></UserLink>
+
+        <p><big>{poem.content}</big></p>
         <ParentPoem poem = {poem}/>
       </div>
     
-    <div id = 'action buttons' className = 'btn btn-group'>
+    <div id = 'action buttons' className = 'btn btn-group px-0'>
     {actionPoem && hideActions !== true &&   <React.Fragment>
           <ActionBtn poem = {actionPoem} didPerformAction = {handelPerformAction} action ={{type:"like", display : 'Likes'}}/>
           <ActionBtn poem = {actionPoem} didPerformAction = {handelPerformAction} action ={{type:"unlike", display: 'Unlike'}}/>
@@ -59,6 +69,6 @@ export function ParentPoem (props) {
           }
          {!isDetail && <button onClick = {handleShareClick} className = 'btn btn-outline-primary btn-sm'>View</button>
     }</div>
-    </div>)
+    </div></div></div>)
   }
   

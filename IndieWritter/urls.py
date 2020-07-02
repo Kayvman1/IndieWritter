@@ -39,7 +39,8 @@ urlpatterns = [
     path('login', login_view),
     path('logout', logout_view),
     path('register', register_view),
-    
+    re_path(r'api/profiles?/',include('profiles.api.urls')),
+
   
 ]
 if settings.DEBUG:
