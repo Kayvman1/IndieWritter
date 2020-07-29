@@ -5,12 +5,12 @@ from django.conf.urls.static import static
 from django.views.generic import TemplateView
 
 from .views import (
-    user_follow_view
     
+    profile_detail_api_view
 )
 #endpoint /api/profiles
 urlpatterns = [
 
-
-    path('<str:username>/follow/', user_follow_view)  
+    path('<str:username>/', profile_detail_api_view ),
+    path('<str:username>/follow/', profile_detail_api_view)  ,
 ]

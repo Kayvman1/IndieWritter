@@ -27,7 +27,7 @@ class PoemCreateSerializer(serializers.ModelSerializer):
     likes = serializers.SerializerMethodField(read_only = True)
     class Meta:
         model = Poem
-        fields = ['user','id','title', 'content', 'likes', 'timestamp']
+        fields = ['user','id','title', 'content', 'likes', 'timestamp', 'is_repub']
 
     
     def get_likes(self, obj):

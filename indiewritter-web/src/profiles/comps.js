@@ -16,7 +16,7 @@ export function UserPicture(props){
     </span>:null
     }
  export function UserLink(props){
-    const {user, is_repub} = props
+    const {user, is_repub, is_post, is_profile} = props
     let displayName 
     if(user.first_name || user.last_name)
     displayName = user.first_name +" "+ user.last_name + " @" + user.username
@@ -24,12 +24,19 @@ export function UserPicture(props){
     else 
       displayName = "@"+user.username
     
-    const handleUserClick= (event) =>{
+    let handleUserClick= (event) =>{
         event.preventDefault()
         window.location.href = `/profile/${user.username}`
         console.log(user.username)
       }
+    if (is_profile === true){
+      handleUserClick = null
+    }
   
+    if (is_post === false) return(    
+    <React.Fragment><h6><small>
+       <span onClick = {handleUserClick}>{displayName} </span>
+    </small></h6> </React.Fragment>)
     return( is_repub === false ? 
     
     <React.Fragment><h6><small>

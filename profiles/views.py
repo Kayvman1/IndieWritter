@@ -6,7 +6,16 @@ from .forms import ProfileForm
 
 # Create your views here.
 def profile_detail_view(request, username, *args, **kwargs):
-    return render(request, "profiles/detail.html", {"username": username})
+    qs = Profile.objects.filter(user__username=username)
+    if not qs.exists():
+        raise Http404
+    profile_obj = qs.first()
+    context = {
+        "username": username,
+        "profile" : profile_obj
+    }
+    print("asdasdasd")
+    return render(request, "profiles/detail.html", context)
 
 
 #when changing to api make sure that the user is authenicated before making changes 

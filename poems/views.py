@@ -27,6 +27,9 @@ def home_view(request, *args, **kwargs):
 
 def local_poem_list(request, *args, **kwargs): 
     return render (request, "poems/list.html")
+
+def local_feed(request, *args, **kwargs): 
+    return render (request, "poems/feed.html")
     
 def local_poem_detail(request, poem_id, *args, **kwargs): 
     return render (request, "poems/detail.html", context = {"poemId": poem_id})

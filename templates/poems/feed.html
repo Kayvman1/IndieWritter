@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{%if request.user.is_authenticated%}
+
+<div id='indiewritter-feed' data-postprem = "true"></div>
+{%else %}
+<div id='indiewritter' data-postprem = "false"></div>
+{%endif%}
+{% endblock content %}

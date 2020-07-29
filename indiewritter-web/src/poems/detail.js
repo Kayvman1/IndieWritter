@@ -10,8 +10,7 @@ export function ParentPoem (props) {
       
         <div id = 'PoemParent' className= "p-2 border rounded mt-4 ml-3" > 
            <p className = 'mb-4 small'/>
-           <UserLink is_repub = {poem.is_repub} user = {poem.user}></UserLink>
-          <Poem poem = {poem.parent} className = {''} hideActions = {true} isRepub={true}/> 
+           <Poem poem = {poem.parent} className = {''} hideActions = {true} isRepub={poem.parent.is_repub}/> 
         </div>
       
       :null)

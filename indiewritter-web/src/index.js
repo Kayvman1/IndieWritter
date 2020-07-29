@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import { PoemsComp, PoemDetailComp, FeedComp} from './poems'
 import * as serviceWorker from './serviceWorker';
+import{ProfileBadgeComp} from "./profiles"
 
 const appEl = document.getElementById('root')
 if (appEl) {
@@ -22,7 +23,16 @@ if (poemsFeedEl) {
         e(FeedComp, poemsFeedEl.dataset), poemsFeedEl);
 }
 
- const poemDetailEls = document.querySelectorAll(".poem-detail")
+const userProfileElements = document.querySelectorAll(".profile-badge")
+console.log(userProfileElements)
+
+userProfileElements.forEach(container =>{
+    ReactDOM.render(
+        e(ProfileBadgeComp, container.dataset),
+    container); 
+
+})
+const poemDetailEls = document.querySelectorAll(".poem-detail")
 
     poemDetailEls.forEach(container =>{
         ReactDOM.render(

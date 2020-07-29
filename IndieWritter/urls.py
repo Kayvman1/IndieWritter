@@ -23,6 +23,7 @@ from poems.views import (
     local_poem_list,
     local_poem_detail,
     local_poem_profile,
+    local_feed,
     )
 from accounts.views import (login_view,logout_view,register_view)
 
@@ -30,8 +31,9 @@ from django.views.generic import TemplateView
 
 
 urlpatterns = [
+    path('', local_feed),
     path('admin/', admin.site.urls),
-    path('', local_poem_list),
+    path('global', local_poem_list),
     path('home', home_view),
     path('<int:poem_id>/', local_poem_detail),
     re_path(r'profiles?/',include('profiles.urls')),
