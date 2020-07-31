@@ -1,8 +1,11 @@
 import React,{useEffect, useState} from "react"
 import {apiProfileDetail, apiProfileFollowToggle} from "./lookup"
 import {UserLink, UserPicture} from './comps'
+import numeral from 'numeral'
 
-
+function DisplayCount(props){
+  return <span className = {props.className}> {numeral(props.children).format("0a")}</span>
+}
 
 export function ProfileBadge(props){
   const {user, didFollowToggle, profileLoading} =props
@@ -18,7 +21,10 @@ export function ProfileBadge(props){
     <div>
       <UserPicture user ={user}/>
       <UserLink user = {user} is_post = {false} is_profile = {true}/>
-      <p>{user.follower_count}"/t"</p>
+      <p>Followers <DisplayCount>{user.follower_count}</DisplayCount></p>
+      <p>Following <DisplayCount>{user.following_count}</DisplayCount></p>
+      <p>{user.location}</p>
+      <p>{user.bio}</p>
       <button className ='btn btn-primary' onClick = {handleFollowToggle} >
           {currVerb}
       </button>

@@ -2,14 +2,14 @@ export function backendLookup (method, endpoint, callback, data){
   let JsonData
   if (data) JsonData = JSON.stringify(data)
   const xhr = new XMLHttpRequest()
-  const url = `http://localhost:8000/api${endpoint}`
+  const url = `https://indiewritter.com/api${endpoint}`
   const csrftoken = getCookie('csrftoken');
 
   xhr.responseType = "json"
   xhr.open (method, url)
   xhr.setRequestHeader("Content-Type", "application/json")
  
- 
+ xhr.setRequestHeader("Access-Control-Allow-Origin", "*")
 
 
 
@@ -18,6 +18,7 @@ export function backendLookup (method, endpoint, callback, data){
    // xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
     xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
     xhr.setRequestHeader("X-CSRFToken", csrftoken)
+    
   }
    
   xhr.onload = function(){
