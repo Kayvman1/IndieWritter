@@ -23,9 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#)=h)_wc*k%f=wk+!$x0t%1wx7*_50$a1%*75s$og(8$27$ju1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['indiewritter.com','104.131.5.114']
+if DEBUG:
+    ALLOWED_HOSTS = ['localhost']
+else:
+    ALLOWED_HOSTS = ['indiewritter.com','104.131.5.114']
 LOGIN_URL = "/login"
 
 MAX_TITLE_LEN = 1024
@@ -141,11 +144,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
-STATIC_ROOT = os.path.join(BASE_DIR, "/s")
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+ ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 
 CORS_ORIGIN_ALLOW_ALL = True # any website has access to my api
 CORS_URLS_REGEX = r'^/api/.*$'
@@ -163,7 +167,7 @@ if DEBUG:
         'rest_framework.renderers.BrowsableAPIRenderer',
     ]
     DEFAULT_AUTHENTICATION_CLASSES += [
-        'IndieWritter.rest_api.dev.DevAuthentication'
+       # 'IndieWritter.rest_api.dev.DevAuthentication'
     ]
 REST_FRAMEWORK = {
     

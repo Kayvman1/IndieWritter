@@ -57,8 +57,8 @@ export  function ListPoem(props){
     }
     return <React.Fragment> {
       poems.map((item, index)=>{
-        return <Poem poem = {item} didRepost = {handleDidRepost}  key ={`${index}-item.id`}
-        className = 'my-5 py-5 border bg-white text-dark' />
+        return < Poem poem = {item} didRepost = {handleDidRepost}  key ={`${index}-item.id`}
+        className = 'my-5 py-5 border-top bg-white text-dark' />
      
       })}
      {nextUrl!==null && <button onClick={handleLoadNext} className ='btn btn-outline-primary'>Load Next</button>}</React.Fragment>

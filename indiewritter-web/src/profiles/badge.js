@@ -18,17 +18,19 @@ export function ProfileBadge(props){
     }
   }
   return user? 
-    <div>
+    <div className = "border rounded">
       <UserPicture user ={user}/>
+      <div className = "ml-4 mt-3">
       <UserLink user = {user} is_post = {false} is_profile = {true}/>
-      <p>Followers <DisplayCount>{user.follower_count}</DisplayCount></p>
-      <p>Following <DisplayCount>{user.following_count}</DisplayCount></p>
-      <p>{user.location}</p>
-      <p>{user.bio}</p>
+  
+      <p>Followers: <DisplayCount>{user.follower_count}</DisplayCount></p>
+      <p>Following: <DisplayCount>{user.following_count}</DisplayCount></p>
+      <p>From: {user.location}</p>
+      <p>Bio: {user.bio}</p>
       <button className ='btn btn-primary' onClick = {handleFollowToggle} >
           {currVerb}
       </button>
-    </div>:null
+    </div></div>:null
 }
 
 export function ProfileBadgeComp(props){

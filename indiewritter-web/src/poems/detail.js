@@ -8,7 +8,7 @@ export function ParentPoem (props) {
     
     return (poem.parent ? 
       
-        <div id = 'PoemParent' className= "p-2 border rounded mt-4 ml-3" > 
+        <div id = 'PoemParent' className= "p-2 border-top border-bottom mt-4 ml-3" > 
            <p className = 'mb-4 small'/>
            <Poem poem = {poem.parent} className = {''} hideActions = {true} isRepub={poem.parent.is_repub}/> 
         </div>
@@ -45,17 +45,17 @@ export  function Poem(props){
   
     return (
     <div className = {className}>
-    <div className = 'd-flex'>
+    <div className = "d-flex">
     <div className = ' mx-1'>
       <UserPicture user = {poem.user} hideActions = {hideActions}></UserPicture>
     </div>
 
     <div className = 'col-11 '>
       <div id = 'Poem'>
-        <h3>{poem.id}-{poem.title}</h3>
-        <UserLink is_repub = {poem.is_repub} user = {poem.user}></UserLink>
+        <h3 className ="text-center">{poem.title}</h3>
+        <div className = "text-center"><UserLink is_repub = {poem.is_repub} user = {poem.user}></UserLink></div>
 
-        <p><big>{poem.content}</big></p>
+        <pre><big>{poem.content}</big></pre>
         <ParentPoem poem = {poem}/>
       </div>
     
@@ -63,8 +63,8 @@ export  function Poem(props){
     {actionPoem && hideActions !== true &&   <React.Fragment>
           <ActionBtn poem = {actionPoem} didPerformAction = {handelPerformAction} action ={{type:"like", display : 'Likes'}}/>
           <ActionBtn poem = {actionPoem} didPerformAction = {handelPerformAction} action ={{type:"unlike", display: 'Unlike'}}/>
-          <ActionBtn poem = {actionPoem} didPerformAction = {handelPerformAction} action ={{type:"repub", display: 'Repub'}}/>
-          </React.Fragment> 
+{      poem.is_repub ===false &&    <ActionBtn poem = {actionPoem} didPerformAction = {handelPerformAction} action ={{type:"repub", display: 'Repub'}}/>
+}          </React.Fragment> 
           }
          {!isDetail && <button onClick = {handleShareClick} className = 'btn btn-outline-primary btn-sm'>View</button>
     }</div>

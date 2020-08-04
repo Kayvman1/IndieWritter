@@ -9,7 +9,7 @@ export function UserPicture(props){
       console.log(user.username)
     }
     return hideActions !== true ? 
-    <span className='pointer px-3 py-2 rounded-circle bg-dark text-white' 
+    <span className='pointer px-3 py-2 rounded-circle bg-dark text-white my-4' 
           onClick= {handleUserClick}
    >
     {user.username && user.username[0]  }
@@ -37,6 +37,7 @@ export function UserPicture(props){
     <React.Fragment><h6><small>
        <span onClick = {handleUserClick}>{displayName} </span>
     </small></h6> </React.Fragment>)
+
     return( is_repub === false ? 
     
     <React.Fragment><h6><small>

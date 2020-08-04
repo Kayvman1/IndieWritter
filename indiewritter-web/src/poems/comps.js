@@ -27,12 +27,12 @@ export function PoemsComp (props){
 
 
   return (
-  <div className = {props.className}>
+  <div id = 'Poems Comp' className = {props.className}>
     {
     canPost === true && 
-    <PoemCreate didPost = {handleNewPoem}  className='col-12 mb-3'/>
+    <PoemCreate id = 'create form' didPost = {handleNewPoem}  className='col-12 mb-3'/>
     }
-    <ListPoem newPoems = {newPoems} username = {username}/>
+    <ListPoem id = 'list poem' newPoems = {newPoems} username = {username}/>
   </div>)
 }
 
@@ -49,7 +49,7 @@ export function FeedComp (props){
 
 
   return (
-  <div className = {props.className}>
+  <div id = 'Feed Comp' className = {props.className}>
     {
     canPost === true && 
     <PoemCreate didPost = {handleNewPoem}  className='col-12 mb-3'/>
@@ -77,6 +77,6 @@ export function PoemDetailComp  (props) {
     }
   },[didLookup,setDidLookup, poemId])
 
-  return poem === null ? null : <Poem poem = {poem} className = {props.className}/>
+  return poem === null ? null : <Poem id = 'Poem detail' poem = {poem} className = {props.className}/>
 
 }
