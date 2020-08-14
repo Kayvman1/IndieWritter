@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     # internal
     'poems',
     'accounts',
-    'profiles'
+    'profiles',
+    'search'
 ]
 
 MIDDLEWARE = [
