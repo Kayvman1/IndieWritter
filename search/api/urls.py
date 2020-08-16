@@ -4,13 +4,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
 
-from .views import (
-
-    search_view
-)
+from .views import api_search
 
 urlpatterns = [
 
-    path('<search_term>/', search_view),
-    
+    path('', api_search)
+
 ]

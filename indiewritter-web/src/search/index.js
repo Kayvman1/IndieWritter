@@ -1,7 +1,8 @@
-import {SearchComp} from "./comps"
+import {SearchBarComp,searchResultComp} from "./comps"
 import {apiSearch} from "./lookup"
 
 export {
-    SearchComp,
+    SearchBarComp,
     apiSearch,
+    searchResultComp
 }
