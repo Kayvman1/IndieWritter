@@ -30,22 +30,27 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
 
-    <div class = 'd-none ' id='poem-container'>
 
     </div>
     
     <!--
+      
+    <div class = 'd-none ' id='poem-container'>
       <div class = 'indiewritter-detail'  data-poem-id = '190' data-class-name = 'col-6 mx-auto'></div>
       <div class = 'indiewritter-detail'  data-poem-id = '190' data-class-name = 'col-6 mx-auto'>
+
+         <div class =  'searchResult' id = 'searchBar' className = "px-1"></div>
+     <div class ='' id="indiewritter" data-id = '192' data-username = 'kayvman' data-postprem = 'true'></div>
 
    
     <div class = 'poem-container'></div> 
     <div class = 'profile-badge' data-username="kayvman"></div>
-    <div class ='' id="indiewritter" data-id = '192' data-username = 'kayvman' data-postprem = 'true'></div>
+  
     <div class ='d-none' id="indiewritter-feed" data-id = '192' data-username = 'kayvman' data-postprem = 'true'></div>
  -->  
-    <div class =  'searchBar' id = 'searchResult' className = "px-1"></div>
-    
+    <div class =  'searchBar' id = 'searchBar' className = "px-1"></div>
+    <div class =  'searchResult' id = 'searchResult' className = "px-1"></div>
+
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -59,25 +64,25 @@
 
   <script>
     
-    var path = window.location.pathname
-    var idRegex = /^[/](\d+)/
-    let match = path.match(idRegex)
+    // var path = window.location.pathname
+    // var idRegex = /^[/](\d+)/
+    // let match = path.match(idRegex)
     
 
     
-    if(match){
-      let poemId = match[1]
-      let indiewritter = document.getElementById('indiewritter')
-      indiewritter.className = 'd-none'
+    // if(match){
+    //   let poemId = match[1]
+    //   let indiewritter = document.getElementById('indiewritter')
+    //   indiewritter.className = 'd-none'
       
 
-      var poemEl =  "<div class = 'poem-detail' data-poem-id = "+poemId+" ></div>"
-      var poemContainer = document.getElementById("poem-container")
-      poemContainer.innerHTML = poemEl
+    //   var poemEl =  "<div class = 'poem-detail' data-poem-id = "+poemId+" ></div>"
+    //   var poemContainer = document.getElementById("poem-container")
+    //   poemContainer.innerHTML = poemEl
 
 
 
-    }
+    // }
     //var tweetEl = "<div class='tweetme-2-detail' data-tweet-id=" + tweetId + " data-class-name='col-6 mx-auto'></div>"
 
   </script>

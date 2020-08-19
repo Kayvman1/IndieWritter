@@ -23,4 +23,6 @@ from poems.serializers import PoemSerializer
 @api_view(['GET','OPTIONS'])
 def search_view(request, search_term, *args, **kwargs):
 
+    
+
     return Response({"search":search_term}, status = 200)
