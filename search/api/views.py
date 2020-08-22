@@ -27,6 +27,8 @@ def api_search(request, *args, **kwargs):
     
     type = request.data.get("type")
     terms = request.data.get("search")
+    if terms[len(terms)-1]=='/':
+        terms= terms[:-1]
     if terms == None :
         return Response ({}, status = 400)
     queries =  terms.split(" ")

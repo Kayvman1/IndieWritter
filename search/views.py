@@ -25,4 +25,4 @@ def search_view(request, search_term, *args, **kwargs):
 
     
 
-    return Response({"search":search_term}, status = 200)
+    return render(request, "search/result.html", context={})
