@@ -25,7 +25,7 @@ export function SearchBarComp (props){
     return (
     <div id = 'form div' className ="px-4">
       <form onSubmit = {handleSubmit}>
-        <input ref = {searchRef} placeholder='Search' className = 'form-control' name ='search' required={true}></input>
+        <input ref = {searchRef} placeholder='Search (Use @ for Users)' className = 'form-control' name ='search' required={true}></input>
       </form>
     </div>)
   }
@@ -196,7 +196,7 @@ export function SearchBarComp (props){
       }
       return <React.Fragment> {
         poems.map((item, index)=>{
-          return <span className = "py-4"><ProfileBadgeComp username = {item.username} /> </span> 
+          return <span className = ""><ProfileBadgeComp username = {item.username} /> </span> 
        
         })}
        {nextUrl!==null && <button onClick={handleLoadNext} className ='btn btn-outline-primary'>Load Next</button>}</React.Fragment>
