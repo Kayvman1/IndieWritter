@@ -18,7 +18,7 @@ export function ProfileBadge(props){
     }
   }
   return user? 
-    <div className = "border rounded">
+    <div className = "border rounded py-4">
       <UserPicture user ={user}/>
       <div className = "ml-4 mt-3">
       <UserLink user = {user} is_post = {false} is_profile = {true}/>
