@@ -5,6 +5,7 @@ import App from './App';
 import { PoemsComp, PoemDetailComp, FeedComp} from './poems'
 import * as serviceWorker from './serviceWorker';
 import{ProfileBadgeComp} from "./profiles"
+import {SearchBarComp,searchResultComp} from './search'
 
 const appEl = document.getElementById('root')
 if (appEl) {
@@ -24,7 +25,6 @@ if (poemsFeedEl) {
 }
 
 const userProfileElements = document.querySelectorAll(".profile-badge")
-console.log(userProfileElements)
 
 userProfileElements.forEach(container =>{
     ReactDOM.render(
@@ -40,14 +40,21 @@ const poemDetailEls = document.querySelectorAll(".poem-detail")
         container); 
 
     })
+    
+const searchBarEl = document.getElementById("searchBar")
+    if (searchBarEl) {
+        ReactDOM.render(
+            e(SearchBarComp, searchBarEl.dataset), searchBarEl);
+    }
 
- 
-//tweetDetailElements.forEach(container=> {
-    //ReactDOM.render( e(PoemDetailComp, container.dataset), 
- //container);
-//})
+const searchEl = document.getElementById("searchResult")
+    if (searchEl) {
+        ReactDOM.render(
+            e(searchResultComp, searchEl.dataset), searchEl);
+    }
 
- 
+
+
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA

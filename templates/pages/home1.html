@@ -1,0 +1,219 @@
+{% extends 'base.html' %}
+
+{%block head_title%}
+    IndieWritter
+{%endblock head_title%}
+
+{%block content%}
+
+
+<div class = 'row text-center'>
+    <div class = 'col' >
+        <h1>Welcome to IndieWriter</h1>
+    </div>
+</div>
+
+
+<div class ='' id="indiewritter-feed" data-id = '192' data-username = 'kayvman' data-postprem = 'true'></div>
+
+<div class = 'row d-none' > 
+    <div class = 'col-md-4 mx-auto col-10'>
+        <form class = 'form' id= 'poem-create-form' method = 'POST' action = '/create'>
+            {% csrf_token %}
+            <div class = 'd-none alert alert-danger' id = 'poem-create-form-error'>
+
+            </div>
+            <input type = 'hidden' value = '/home' name = 'next'/>
+            <textarea class = 'form-control' required = 'required' id = 'title' name = 'title' placeholder="Your Title ..."></textarea>
+            <textarea class = 'form-control' required = 'required' id = 'content' name = 'content' placeholder="Your Work ..."></textarea>
+            <button class = 'btn btn-primary' >Post</button>
+        </form>
+    </div>
+</div>
+
+<noscript>You need to enable JavaScript to run this app.</noscript>
+
+
+<div class = 'row d-none' id = 'poems'>
+    Loading ...
+</div>
+
+<script>
+    const poemsEl = document.getElementById("poems")
+    const poemCreateForm = document.getElementById("poem-create-form")
+    poemCreateForm.addEventListener("submit", handleFormDidSubmit)
+    loadPoems (poemsEl)
+
+
+    function handlePoemCreateFormError(msg, display){
+        var myErrorDiv = document.getElementById("poem-create-form-error")
+        if (display ===true){
+            myErrorDiv.setAttribute("class", 'alert alert-danger')
+            myErrorDiv.innerHTML = msg
+        }else{
+            myErrorDiv.setAttribute("class", 'd-none alert alert-danger')
+
+        }
+    }
+
+
+    function loadPoems (poemsElement) {
+        const xhr = new XMLHttpRequest()
+        xhr.responseType = "json"
+        xhr.open ('GET', "/poems")
+        
+        xhr.onload = function(){
+            const serverResponse = xhr.response
+            const listedItems = serverResponse
+            var finalPoemStr = ""
+            var i;
+            for (i =0 ;  i < listedItems.length; i++){
+                poemObj = listedItems[i]
+                var currItem = formatPoemElement(poemObj)
+                finalPoemStr += currItem
+            }
+            poemsElement.innerHTML = finalPoemStr
+        }
+        xhr.send()
+    }
+
+    
+    function handleFormDidSubmit(event){
+        event.preventDefault()
+        const myForm = event.target
+        const myFormData = new FormData(myForm)
+        const url = myForm.getAttribute("action")
+        const method = myForm.getAttribute("method")
+
+        xhr = new XMLHttpRequest()  
+        xhr.open (method, url)
+        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+        xhr.responseType = "json"
+
+        xhr.onload = function (){
+            if (xhr.status === 201){
+                handlePoemCreateFormError('', false)
+                const retPoem = xhr.response 
+                const newElement = formatPoemElement(xhr.response) 
+                const currElement = poemsEl.innerHTML
+                poemsEl.innerHTML = newElement+ currElement  
+                myForm.reset()
+            }
+
+            else if(xhr.status === 400){
+                const errorJson = xhr.response
+                console.log(errorJson)
+                const contentError = errorJson.content
+                const titleError = errorJson.title
+                let contentErrorMsg;
+
+                if (contentError || titleError) {
+                    contentErrorMsg = contentError[0]
+
+                    if (contentErrorMsg) {
+                        handlePoemCreateFormError(contentErrorMsg, true)
+                    } else {
+                        alert("An error occured. Please try again.")
+                    }
+
+                } else {
+                    resp = xhr.response
+                    console.log(JSON.parse(resp))
+                }
+            }
+
+            else if (xhr.status ===403){
+                alert ("You Must Login To Publish Your Work")
+                window.location.href= "/login"
+            }
+
+            else if (xhr.status === 500){
+                alert ("Server error, please try again")
+            }
+        }
+
+        xhr.onerror = function (){
+            alert("there was an error posting your work, please try again later")
+        }     
+
+        xhr.send(myFormData)
+    }
+    
+
+    function handlePoemAction(poem_id, currentCount, action){
+        const url = 'api/poems/action'
+        const method = 'POST'
+        const data = JSON.stringify( {
+            id : poem_id,
+            action :action
+        })
+
+        var csrftoken = getCookie('csrftoken');
+        const xhr = new XMLHttpRequest()
+        xhr.open(method, url)
+        xhr.setRequestHeader("Content-Type", "application/json")
+        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+        xhr.setRequestHeader("X-CSRFToken", csrftoken)
+
+        xhr.onload = function (){
+            loadPoems(poemsEl)
+        }
+
+        xhr.send(data)
+
+        console.log(poem_id, currentCount)
+        return 
+    }
+
+
+    function LikeBtm(poem){
+        return "<button class = 'btn btn-primary btn-sm' onclick = handlePoemAction(" + 
+        poem.id + "," + poem.likes + ",'like')> "+
+        poem.likes +  " Likes"+
+         "</button>"
+
+    }
+    function UnlikeBtm(poem){
+        return "<button class = 'btn btn-outline-primary btn-sm' onclick = handlePoemAction(" + 
+        poem.id + "," + poem.likes + ",'unlike')> Unlike"+
+         "</button>"
+
+    }
+    function RepubBtm(poem){
+        return "<button class = 'btn btn-outline-success btn-sm' onclick = handlePoemAction(" + 
+        poem.id + "," + poem.likes + ",'repub')>Republish</button>"
+
+    }
+    
+
+    function formatPoemElement(poem){
+        var formattedPoem = 
+        "<div class='col-12 col-md-10 mx-auto border rounded py-3 mb-4' id='poem-"  + poem.id + "'>" + 
+        "<h5>" + poem.id + ' ' +  poem.title + "</h5>" + 
+        "<p>" +poem.content + "</p>"+
+        "<div> " + LikeBtm(poem) + UnlikeBtm(poem) + RepubBtm(poem)+" </div></div>"
+        return formattedPoem 
+    }   
+    console.log("check out geno.cc")
+
+
+    function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+    }
+
+</script> 
+{% endblock content%}
