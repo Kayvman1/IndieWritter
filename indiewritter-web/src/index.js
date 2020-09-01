@@ -2,11 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { PoemsComp, PoemDetailComp, FeedComp} from './poems'
+import { PoemsComp, PoemDetailComp, FeedComp, PoemCreateComp} from './poems'
 import * as serviceWorker from './serviceWorker';
+
+
 import{ProfileBadgeComp} from "./profiles"
 import {SearchBarComp,searchResultComp} from './search'
 
+import ReactQuill, {Quill} from 'react-quill';
+ import 'react-quill/dist/quill.snow.css';
+
+ 
 const appEl = document.getElementById('root')
 if (appEl) {
     ReactDOM.render(<App />, appEl);
@@ -51,6 +57,39 @@ const searchEl = document.getElementById("searchResult")
     if (searchEl) {
         ReactDOM.render(
             e(searchResultComp, searchEl.dataset), searchEl);
+    }
+
+const createEl = document.getElementById("poemCreate")
+    if (createEl) {
+        ReactDOM.render(
+            e(PoemCreateComp, createEl.dataset), createEl);
+
+            var quill = new Quill('#editor-container', {
+                modules: {
+                  toolbar: [
+                    ['bold', 'italic'],
+                    ['link', 'blockquote', 'code-block', 'image'],
+                    [{ list: 'ordered' }, { list: 'bullet' }]
+                  ]
+                },
+                placeholder: 'Compose an epic...',
+                theme: 'snow'
+              });
+              
+              var form = document.getElementById('FORM');
+              form.onsubmit = function() {
+                alert("chill")
+                // Populate hidden form on submit
+                var about = document.querySelector('input[name=about]');
+                about.value = JSON.stringify(quill.getContents());
+                console.log(about.value)
+                
+                //console.log("Submitted", $(form).serialize(), $(form).serializeArray());
+                
+                // No back end to actually submit to!
+                alert('Open the console to see the submit data!')
+                return false;
+              };
     }
 
 

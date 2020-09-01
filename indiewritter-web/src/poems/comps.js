@@ -7,11 +7,12 @@ import {FeedList} from './feed'
 import {Poem} from './detail'
 import {apiPoemDetail} from './lookup'
 
+
+
 // eslint-disable-next-line
 function print (s){
   console.log(s)
-}
-
+} 
 
 
 export function PoemsComp (props){
@@ -79,4 +80,11 @@ export function PoemDetailComp  (props) {
 
   return poem === null ? null : <Poem id = 'Poem detail' poem = {poem} className = {props.className}/>
 
+}
+
+
+export function PoemCreateComp(props){
+  return (
+     <PoemCreate></PoemCreate>
+   )
 }

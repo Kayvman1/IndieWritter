@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#)=h)_wc*k%f=wk+!$x0t%1wx7*_50$a1%*75s$og(8$27$ju1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 if DEBUG:
     ALLOWED_HOSTS = ['localhost']
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # third-party
     'corsheaders',
     'rest_framework',
+    'ckeditor',
     # internal
     'poems',
     'accounts',
@@ -168,7 +169,7 @@ if DEBUG:
         'rest_framework.renderers.BrowsableAPIRenderer',
     ]
     DEFAULT_AUTHENTICATION_CLASSES += [
-       # 'IndieWritter.rest_api.dev.DevAuthentication'
+        'IndieWritter.rest_api.dev.DevAuthentication'
     ]
 REST_FRAMEWORK = {
     

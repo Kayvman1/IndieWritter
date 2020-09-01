@@ -3,7 +3,7 @@ import random
 from django.conf import settings
 from django.db import models
 from django.db.models import Q
-
+from ckeditor.fields import RichTextField
 
 User = settings.AUTH_USER_MODEL
 
@@ -43,9 +43,9 @@ class Poem(models.Model):
  #you can just backup the server to keep these tweets
  #set null keeps the work but assings the user asa null
  #must add null = True
-    parent = models.ForeignKey("self", null = True, on_delete = models.SET_NULL)
+    parent = models.ForeignKey("self", null = True, on_delete = models.SET_NULL , blank = True)
     title = models.CharField(max_length = settings.MAX_TITLE_LEN, null = False, blank  = False)
-    content = models.TextField(blank = True, null=True) 
+    content = RichTextField (blank = True, null=True) 
     image = models.FileField(upload_to = 'images/', blank =True, null =True  )
     timestamp = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='poem_user', blank=True, through=PoemLike)

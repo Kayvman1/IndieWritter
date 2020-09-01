@@ -2,8 +2,8 @@ export function backendLookup (method, endpoint, callback, data){
   let JsonData
   if (data) JsonData = JSON.stringify(data)
   const xhr = new XMLHttpRequest()
-  const url = `https://indiewritter.com/api${endpoint}`
-  //const url =  `http://localhost:8000/api${endpoint}`
+  //const url = `https://indiewritter.com/api${endpoint}`
+  const url =  `http://localhost:8000/api${endpoint}`
   const csrftoken = getCookie('csrftoken');
 
   xhr.responseType = "json"
